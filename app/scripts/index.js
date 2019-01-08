@@ -17,18 +17,18 @@ let account
 const createStar = async () => {
   const instance = await StarNotary.deployed();
   const name = document.getElementById("starName").value;
+  const symbol = document.getElementById("starSymbol").value;
   const id = document.getElementById("starId").value;
-  await instance.createStar(name, id, {from: account});
+  await instance.createStar(name,symbol,id, {from: account});
   App.setStatus("New Star Owner is " + account + ".");
 }
 
-const tokenIdToStarInfo = async () => {
+const lookUptokenIdToStarInfo = async () => {
   const instance = await StarNotary.deployed();
   const id2 = document.getElementById("starId2").value;
-  var starName = await instance.tokenIdToStarInfo(id2, {from: account});
+  var starName = await instance.lookUptokenIdToStarInfo(id2, {from: account});
   App.setStatus("Star Owner is " + starName + ".");
 }
-
 
 const App = {
   start: function () {
@@ -64,8 +64,8 @@ const App = {
     createStar();
   },
 
-  tokenIdToStarInfo: function(){
-    tokenIdToStarInfo();
+  lookUptokenIdToStarInfo: function(){
+    lookUptokenIdToStarInfo();
   },
 
 }
