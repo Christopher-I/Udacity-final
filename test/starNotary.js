@@ -26,7 +26,7 @@ contract('StarNotary', accounts => {
 
                 it('can create a star and get its name', async function () { 
                      // Add your logic here 
-                     await this.contract.createStar(name,symbol, starId,{from: user1})                 
+                     await this.contract.createStar(name, starId,{from: user1})                 
                      assert.equal(await this.contract.ownerOf(starId), user1)
 
                 })
@@ -36,7 +36,7 @@ contract('StarNotary', accounts => {
     describe('star uniqueness', () => { 
         it('allows only unique stars to be minted', async function() { 
             // first we mint our first star
-            await this.contract.createStar(name,symbol,starId,{from: user1})
+            await this.contract.createStar(name,starId,{from: user1})
             // then we try to mint the same star, and we expect an error
             await expectThrow(this.contract.createStar(name,starId,{from: user1}))
     
@@ -50,7 +50,7 @@ contract('StarNotary', accounts => {
                 let newDec = i.toString()
                 let newMag = i.toString()
 
-                await this.contract.createStar(name,symbol,id, {from: user1})
+                await this.contract.createStar(name,id, {from: user1})
                 let starInfo = await this.contract.lookUptokenIdToStarInfoMap(id)
                 assert.equal(starInfo[0], name)       
             }
@@ -62,8 +62,8 @@ contract('StarNotary', accounts => {
     describe('exchanging and transfer of stars', async () => { 
 
         beforeEach(async function () {       
-            await this.contract.createStar(name,symbol,starId, {from: user1})
-            await this.contract.createStar(name2,symbol,starId2, {from: user2})
+            await this.contract.createStar(name,starId, {from: user1})
+            await this.contract.createStar(name2,starId2, {from: user2})
             await this.contract.exchangeStars(user1, user2, starId,starId2, {from: user1})
         })           
 
@@ -84,7 +84,7 @@ contract('StarNotary', accounts => {
     describe('retrieving star information', () => { 
 
         beforeEach(async function () { 
-            await this.contract.createStar(name,symbol,starId, {from: user1})
+            await this.contract.createStar(name,starId, {from: user1})
             })
 
         it('checks if star exists', async function () { 

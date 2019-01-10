@@ -17,9 +17,8 @@ let account
 const createStar = async () => {
   const instance = await StarNotary.deployed();
   const name = document.getElementById("starName").value;
-  const symbol = document.getElementById("starSymbol").value;
   const id = document.getElementById("starId").value;
-  await instance.createStar(name,symbol,id, {from: account});
+  await instance.createStar(name,id, {from: account});
   App.setStatus("New Star Owner is " + account + ".");
 }
 

@@ -1,14 +1,17 @@
 pragma solidity ^0.4.23;
 
-import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Metadata.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
 import "./Strings.sol";
 
-contract StarNotary is ERC721Metadata { 
+contract StarNotary is ERC721 { 
+    string public name = "Udacity Final";
+    string public symbol = "UF";
+
+
     using strings for *;
 
     struct Star { 
         string name;
-        string symbol;
         uint256 starId;
     }
 
@@ -19,22 +22,18 @@ contract StarNotary is ERC721Metadata {
     mapping(bytes32 => bool) public createdTokens;
 
 
-    function createStar(string _name,string _symbol, uint256 _starId) public { 
-        Star memory newStar = Star(_name, _symbol,_starId);
+    function createStar(string _name, uint256 _starId) public { 
+        Star memory newStar = Star(_name,_starId);
         starHash = keccak256(_starId);
         require(!createdTokens[starHash]);//check if this particular star coordinates have been created already
         createdTokens[starHash] = true;
         lookUptokenIdToStarInfoMap[_starId] = newStar;
 
         ERC721._mint(msg.sender,_starId);
-        ERC721Metadata._name =  _name;
-        ERC721Metadata._symbol =  _symbol;//include star symbol
     }
 
 
     function transferStar(address _to, uint256 _starId) public { 
-        require(this.ownerOf(_starId) == msg.sender);
-       // address starOwner = this.ownerOf(_starId);
 
         ERC721.transferFrom(msg.sender, _to, _starId);
 
@@ -42,6 +41,7 @@ contract StarNotary is ERC721Metadata {
 
 
     function exchangeStars(address _address1, address _address2, uint256 _starId1, uint256 _starId2) public { 
+
         require(this.ownerOf(_starId1) == _address1);
         require(this.ownerOf(_starId2) == _address2);
 
