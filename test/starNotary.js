@@ -22,16 +22,33 @@ contract('StarNotary', accounts => {
     })
 
         describe('can create a star', () => { 
-
-
                 it('can create a star and get its name', async function () { 
                      // Add your logic here 
                      await this.contract.createStar(name, starId,{from: user1})                 
                      assert.equal(await this.contract.ownerOf(starId), user1)
-
                 })
-
         })
+
+
+    describe('Name and symbol are correctly added', () => { 
+
+        beforeEach(async function () { 
+            await this.contract.createStar(name,starId, {from: user1})
+            })
+
+        it('stores name accurately', async function () { 
+                // Add your logic here           
+            let name = await this.contract.name({from: user1})
+            assert.equal(name, "Udacity Final")
+            })
+
+
+        it('stores symbol accurately', async function () { 
+                // Add your logic here           
+            let symbol = await this.contract.symbol({from: user1})
+            assert.equal(symbol, "UF")
+            })
+        }) 
 
     describe('star uniqueness', () => { 
         it('allows only unique stars to be minted', async function() { 
@@ -93,6 +110,7 @@ contract('StarNotary', accounts => {
             assert.equal(result, true)
             })
         })    
+
 })
 
 var expectThrow = async function(promise) { 
@@ -102,6 +120,5 @@ var expectThrow = async function(promise) {
         assert.exists(error)
         return 
     }
-
     assert.fail('expected an error, but none was found')
 }
